@@ -552,7 +552,7 @@ footer{
   font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
 }
 .mobile-sticky-cta a:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.mobile-sticky-cta.is-dimmed{opacity:.24;pointer-events:none;transform:translateY(3px)}
+.mobile-sticky-cta.is-hidden{opacity:0;pointer-events:none;transform:translateY(12px)}
 
 /* ─── RESPONSIVE ─────────────────────── */
 @media(max-width:960px){
@@ -1164,20 +1164,39 @@ function reorderSectionsForMobile() {
 }
 reorderSectionsForMobile();
 
-// In fondo pagina la sticky mobile si attenua per non
-// competere con la CTA principale della sezione finale.
-function setupMobileStickyCtaDim() {
+// In mobile la sticky CTA resta visibile solo nel tratto centrale:
+// si nasconde in alto (hero) e in basso (final CTA/footer).
+function setupMobileStickyCtaVisibility() {
   const sticky = document.querySelector('.mobile-sticky-cta');
   if (!sticky || !window.matchMedia || !window.matchMedia('(max-width: 960px)').matches) return;
-  const target = document.querySelector('.final-cta') || document.querySelector('footer');
-  if (!target || !('IntersectionObserver' in window)) return;
-  const ioSticky = new IntersectionObserver((entries) => {
-    const visible = entries.some((e) => e.isIntersecting);
-    sticky.classList.toggle('is-dimmed', visible);
+  if (!('IntersectionObserver' in window)) return;
+
+  const hero = document.querySelector('.hero');
+  const bottomTarget = document.querySelector('.final-cta') || document.querySelector('footer');
+  if (!hero || !bottomTarget) return;
+
+  let hideForTop = true;
+  let hideForBottom = false;
+
+  const syncState = () => {
+    sticky.classList.toggle('is-hidden', hideForTop || hideForBottom);
+  };
+
+  const heroIo = new IntersectionObserver((entries) => {
+    hideForTop = entries[0]?.isIntersecting ?? false;
+    syncState();
   }, { threshold: 0.2 });
-  ioSticky.observe(target);
+
+  const bottomIo = new IntersectionObserver((entries) => {
+    hideForBottom = entries[0]?.isIntersecting ?? false;
+    syncState();
+  }, { threshold: 0.15 });
+
+  heroIo.observe(hero);
+  bottomIo.observe(bottomTarget);
+  syncState();
 }
-setupMobileStickyCtaDim();
+setupMobileStickyCtaVisibility();
 
 function setupGalleryRotation(pool) {
   if (!pool || pool.length < 2) return;
