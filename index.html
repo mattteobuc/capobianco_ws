@@ -304,7 +304,7 @@ h2.serif.onblue em{color:var(--aqua)}
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transition:transform .55s ease;
 }
-.gal-item:hover img{transform:scale(1.04)}
+.gal-item:hover img:not(.gal-next){transform:scale(1.04)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
 .gal-item img.gal-current{z-index:1}
 .gal-item img.gal-next{z-index:2;pointer-events:none}
@@ -1063,24 +1063,51 @@ function setupGalleryRotation(pool) {
   const slotDirections = ['down', 'left', 'up', 'right'];
   const allDirClasses = ['dir-down', 'dir-left', 'dir-up', 'dir-right'];
   let pointer = 0;
-  let slotPointer = 0;
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const intervalMs = reduceMotion ? 1800 : 700;
-  const animationMs = reduceMotion ? 260 : 900;
+  const animationMs = reduceMotion ? 300 : 950;
+  const shortShiftMs = reduceMotion ? 900 : 500;
+  const longPauseMs = reduceMotion ? 2600 : 2000;
 
-  if (window.__galleryRotationTimer) window.clearInterval(window.__galleryRotationTimer);
+  // Sequenza richiesta: slot-1 -> slot-3 (shift breve) -> pausa
+  // poi slot-2 -> slot-4 (shift breve) -> pausa lunga e repeat.
+  const rotationSteps = [
+    { slotIndex: 0, waitAfterMs: shortShiftMs },
+    { slotIndex: 2, waitAfterMs: longPauseMs },
+    { slotIndex: 1, waitAfterMs: shortShiftMs },
+    { slotIndex: 3, waitAfterMs: longPauseMs }
+  ];
+  let stepPointer = 0;
 
-  window.__galleryRotationTimer = window.setInterval(() => {
-    const slotIndex = slotPointer % slots.length;
-    slotPointer += 1;
+  // Precarica il pool immagini per ridurre gli sfarfallii
+  // durante i cambi rapidi tra uno slot e l'altro.
+  const preloaded = new Set();
+  pool.forEach((src) => {
+    if (!src || preloaded.has(src)) return;
+    preloaded.add(src);
+    const probe = new Image();
+    probe.decoding = 'async';
+    probe.src = src;
+  });
 
+  if (window.__galleryRotationTimer) window.clearTimeout(window.__galleryRotationTimer);
+
+  const runStep = () => {
+    const step = rotationSteps[stepPointer % rotationSteps.length];
+    stepPointer += 1;
+    const slotIndex = step.slotIndex;
     const img = document.querySelector(slots[slotIndex]);
     const wrap = img?.closest('.gal-item');
-    if (!img || !wrap) return;
+    if (!img || !wrap) {
+      window.__galleryRotationTimer = window.setTimeout(runStep, step.waitAfterMs);
+      return;
+    }
 
     const nextSrc = pool[pointer % pool.length];
     pointer += 1;
-    if (!nextSrc || nextSrc === img.src) return;
+    if (!nextSrc || nextSrc === img.src) {
+      window.__galleryRotationTimer = window.setTimeout(runStep, step.waitAfterMs);
+      return;
+    }
 
     // Animazione continua: lo slide uscente e quello entrante
     // si muovono nello stesso verso con un leggero overlap.
@@ -1093,15 +1120,27 @@ function setupGalleryRotation(pool) {
     next.src = nextSrc;
     next.classList.remove('gal-current');
     next.classList.add('gal-next');
-    wrap.appendChild(next);
 
-    window.setTimeout(() => {
-      img.src = nextSrc;
-      img.classList.remove('gal-current');
-      next.remove();
-      wrap.classList.remove(dirClass);
-    }, animationMs);
-  }, intervalMs);
+    const mountAndFinalize = () => {
+      wrap.appendChild(next);
+      window.setTimeout(() => {
+        img.src = nextSrc;
+        img.classList.remove('gal-current');
+        next.remove();
+        wrap.classList.remove(dirClass);
+      }, animationMs);
+    };
+
+    if (typeof next.decode === 'function') {
+      next.decode().then(mountAndFinalize).catch(mountAndFinalize);
+    } else {
+      mountAndFinalize();
+    }
+
+    window.__galleryRotationTimer = window.setTimeout(runStep, step.waitAfterMs);
+  };
+
+  runStep();
 }
 
 function setupGalleryLightbox() {
