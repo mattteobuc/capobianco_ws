@@ -301,11 +301,19 @@ h2.serif.onblue em{color:var(--aqua)}
 .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
 .gal-item:hover img{transform:scale(1.07)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
+.gal-item.is-fading img{opacity:.55;transition:opacity .35s ease,transform .55s ease}
 .gal-overlay{
   position:absolute;inset:0;background:rgba(0,30,52,.0);
   transition:background .3s;display:flex;align-items:center;justify-content:center;
 }
 .gal-item:hover .gal-overlay{background:rgba(0,30,52,.25)}
+.gal-zoom-hint{
+  position:absolute;left:10px;bottom:10px;z-index:2;
+  background:rgba(7,15,22,.62);color:#fff;border:1px solid rgba(255,255,255,.28);
+  border-radius:999px;padding:5px 10px;font-size:.66rem;letter-spacing:.05em;
+  opacity:0;transform:translateY(5px);transition:opacity .2s,transform .2s;
+}
+.gal-item:hover .gal-zoom-hint{opacity:1;transform:translateY(0)}
 
 /* ─── PRICING ────────────────────────── */
 .pricing-inner{max-width:1100px;margin:0 auto}
@@ -386,14 +394,36 @@ h2.serif.onblue em{color:var(--aqua)}
 }
 .loc-lbl{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
 .loc-val{font-size:.9rem;color:var(--white);margin-top:2px;font-weight:300;line-height:1.5}
+.loc-actions{margin-top:10px}
 .loc-photo{background:url('/images/location-cover.avif') center/cover no-repeat;background-color:#2b4657;position:relative;}
 .loc-photo-over{position:absolute;inset:0;background:rgba(0,30,52,.3);display:flex;align-items:center;justify-content:center;}
 .btn-maps{
-  background:var(--white);color:var(--ink);padding:14px 28px;border-radius:100px;
-  text-decoration:none;font-size:.76rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
-  display:flex;align-items:center;gap:8px;transition:background .25s;
+  background:linear-gradient(130deg,#ffffff 0%,#eef7f4 100%);
+  color:var(--ink);padding:12px 18px;border-radius:100px;border:1px solid rgba(0,119,168,.18);
+  text-decoration:none;font-size:.74rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:8px;transition:background .25s,transform .2s;
 }
-.btn-maps:hover{background:var(--sand)}
+.btn-maps:hover{background:#fff;transform:translateY(-1px)}
+.btn-maps-inline{box-shadow:0 8px 22px rgba(0,0,0,.16)}
+
+/* ─── LIGHTBOX GALLERIA ───────────────── */
+.lightbox{
+  position:fixed;inset:0;z-index:500;display:none;align-items:center;justify-content:center;
+  background:rgba(7,15,22,.88);padding:24px;
+}
+.lightbox.open{display:flex}
+.lightbox-dialog{
+  width:min(100%,1080px);max-height:100%;display:grid;gap:10px;justify-items:center;
+}
+.lightbox-img{
+  max-width:100%;max-height:min(82vh,900px);width:auto;height:auto;border-radius:14px;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.lightbox-caption{color:rgba(255,255,255,.84);font-size:.86rem;text-align:center}
+.lightbox-close{
+  position:absolute;top:14px;right:14px;border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.08);
+  color:#fff;width:42px;height:42px;border-radius:999px;cursor:pointer;font-size:1.15rem;
+}
 
 /* ─── FINAL CTA ──────────────────────── */
 .final-cta{
@@ -669,22 +699,27 @@ footer{
     <div class="gal-item big">
       <img src="/images/gallery-main.avif" alt="Panorama Capobianco" id="main-gal-img">
       <div class="gal-overlay"></div>
+      <span class="gal-zoom-hint">Clicca per ingrandire</span>
     </div>
     <div class="gal-item" id="slot-1">
       <img src="/images/gallery-1.avif" alt="Dome house">
       <div class="gal-overlay"></div>
+      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-2">
       <img src="/images/gallery-2.avif" alt="Tramonto">
       <div class="gal-overlay"></div>
+      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-3">
       <img src="/images/gallery-3.avif" alt="Scogliera">
       <div class="gal-overlay"></div>
+      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-4">
       <img src="/images/gallery-4.avif" alt="Interno">
       <div class="gal-overlay"></div>
+      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
   </div>
 </div>
@@ -788,6 +823,11 @@ footer{
         <div>
           <div class="loc-lbl">Indirizzo</div>
           <div class="loc-val">Via dell'Oca, Punta Braccetto<br>97017 Santa Croce Camerina (RG)</div>
+          <div class="loc-actions">
+            <a href="https://maps.google.com/?q=36.812572,14.469384" target="_blank" class="btn-maps btn-maps-inline">
+              📍 Apri percorso su Google Maps
+            </a>
+          </div>
         </div>
       </div>
       <div class="loc-row">
@@ -848,6 +888,15 @@ footer{
 
 <a href="https://wa.me/393270761520?text=Ciao!%20Vorrei%20verificare%20la%20disponibilit%C3%A0." class="wa-btn" target="_blank" title="Verifica disponibilità su WhatsApp">💬</a>
 
+<!-- Lightbox immagini galleria -->
+<div id="gallery-lightbox" class="lightbox" aria-hidden="true">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Chiudi immagine">✕</button>
+  <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Anteprima immagine galleria">
+    <img id="lightbox-img" class="lightbox-img" src="" alt="">
+    <p id="lightbox-caption" class="lightbox-caption"></p>
+  </div>
+</div>
+
 <script>
 /* Nav scroll */
 const topbar = document.getElementById('topbar');
@@ -885,6 +934,16 @@ const CANDIDATES = [
   '/images/gallery-2.avif',
   '/images/gallery-3.avif',
   '/images/gallery-4.avif',
+  '/images/gallery-main1.avif',
+  '/images/595f08_142358592cad4ca2b4b12df7d4415a0e~mv2.png.avif',
+  '/images/595f08_1c159d816fe24583af49253a1f875a79~mv2.jpg.avif',
+  '/images/595f08_441a996d43174d23813b125dc5122e77~mv2.jpg.avif',
+  '/images/595f08_73b0548b58be46fcba437a887900ae9f~mv2.jpg.avif',
+  '/images/595f08_7f5cee7553b0402ea0344d7d07f835b0~mv2.jpg.avif',
+  '/images/595f08_82e98de09c774f87947452aba7e3c79f~mv2.jpg.avif',
+  '/images/595f08_8d61aea53f3b459798a3fae7fefc3355.jpg.avif',
+  '/images/595f08_b11cb0bda2d84b1caebd09e5d7e506be~mv2.jpg.avif',
+  '/images/595f08_f4d22dcc758a494eabdb45f072bbfca6.jpg.avif',
   '/images/location-cover.avif',
   '/images/final-cta-bg.avif'
 ];
@@ -926,6 +985,9 @@ async function applyImages() {
     return img;
   };
 
+  const gallerySlots = ['#slot-1 img', '#slot-2 img', '#slot-3 img', '#slot-4 img'];
+  const galleryPool = [];
+
   const heroImg = pick(['hero','main','panorama','dome','cover'], true);
   if (heroImg) {
     document.querySelector('.hero-img').style.backgroundImage =
@@ -941,19 +1003,112 @@ async function applyImages() {
   setEl('.img-main',     pick(['about','main','struttura','dome']));
   setEl('.img-sec',      pick(['about','secondary','mare','scogliera']));
   setEl('#main-gal-img', pick(['gallery','main','panorama','tramonto']));
-  setEl('#slot-1 img',   pick(['gallery','1','dome','interno']));
-  setEl('#slot-2 img',   pick(['gallery','2','tramonto','mare']));
-  setEl('#slot-3 img',   pick(['gallery','3','scogliera']));
-  setEl('#slot-4 img',   pick(['gallery','4','interno','dettaglio']));
+
+  // Popolamento slot secondari galleria
+  const initialGalleryItems = [
+    pick(['gallery','1','dome','interno']),
+    pick(['gallery','2','tramonto','mare']),
+    pick(['gallery','3','scogliera']),
+    pick(['gallery','4','interno','dettaglio'])
+  ];
+  initialGalleryItems.forEach((item, idx) => setEl(gallerySlots[idx], item));
+
+  // Pool extra per rotazione automatica sugli stessi slot
+  avail.forEach((item) => {
+    const isGalleryLike = item.name.includes('gallery') || item.name.includes('595f08_');
+    const alreadyDisplayed = initialGalleryItems.some((d) => d && d.src === item.src);
+    const isMain = document.querySelector('#main-gal-img')?.src.includes(item.src);
+    if (isGalleryLike && !alreadyDisplayed && !isMain) galleryPool.push(item.src);
+  });
 
   const loc = pick(['location','costa','territorio','mappa']);
   if (loc) document.querySelector('.loc-photo').style.backgroundImage = `url('${loc.src}')`;
 
   const cta = pick(['final','cta','tramonto','mare','esperienza']);
   if (cta) document.querySelector('.final-cta').style.backgroundImage = `url('${cta.src}')`;
+
+  setupGalleryRotation(galleryPool);
+  setupGalleryLightbox(galleryPool);
 }
 
 applyImages();
+
+function setupGalleryRotation(pool) {
+  if (!pool || pool.length < 2) return;
+  const slots = ['#slot-1 img', '#slot-2 img', '#slot-3 img', '#slot-4 img'];
+  let pointer = 0;
+
+  setInterval(() => {
+    // Ruota 2 slot alla volta con effetto lieve
+    [1, 3].forEach((slotIndex) => {
+      const img = document.querySelector(slots[slotIndex]);
+      const wrap = img?.closest('.gal-item');
+      if (!img || !wrap) return;
+      wrap.classList.add('is-fading');
+      const nextSrc = pool[pointer % pool.length];
+      pointer += 1;
+      window.setTimeout(() => {
+        img.src = nextSrc;
+        wrap.classList.remove('is-fading');
+      }, 220);
+    });
+  }, 4800);
+}
+
+function setupGalleryLightbox() {
+  const lightbox = document.getElementById('gallery-lightbox');
+  const closeBtn = document.getElementById('lightbox-close');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const galleryImgs = Array.from(document.querySelectorAll('#galleria .gal-item img'));
+  if (!lightbox || !closeBtn || !lightboxImg || !galleryImgs.length) return;
+
+  let currentIndex = 0;
+  let lastFocused = null;
+
+  const openAt = (idx) => {
+    const img = galleryImgs[idx];
+    if (!img) return;
+    currentIndex = idx;
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || 'Immagine galleria';
+    lightboxCaption.textContent = img.alt || 'Panorama CapoBianco';
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    closeBtn.focus();
+  };
+
+  const close = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  };
+
+  const step = (delta) => {
+    currentIndex = (currentIndex + delta + galleryImgs.length) % galleryImgs.length;
+    openAt(currentIndex);
+  };
+
+  galleryImgs.forEach((img, idx) => {
+    img.style.cursor = 'zoom-in';
+    img.addEventListener('click', () => {
+      lastFocused = img;
+      openAt(idx);
+    });
+  });
+
+  closeBtn.addEventListener('click', close);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) close();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') step(1);
+    if (e.key === 'ArrowLeft') step(-1);
+  });
+}
 
 /* Fallback graceful per img mancanti */
 document.querySelectorAll('img').forEach(img => {
