@@ -544,6 +544,7 @@ footer{
   bottom:calc(10px + env(safe-area-inset-bottom));z-index:350;
   padding:8px;border-radius:14px;background:rgba(8,24,38,.88);
   border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+  transition:opacity .25s ease,transform .25s ease;
 }
 .mobile-sticky-cta a{
   min-height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;
@@ -551,6 +552,7 @@ footer{
   font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
 }
 .mobile-sticky-cta a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.mobile-sticky-cta.is-dimmed{opacity:.24;pointer-events:none;transform:translateY(3px)}
 
 /* ─── RESPONSIVE ─────────────────────── */
 @media(max-width:960px){
@@ -581,6 +583,17 @@ footer{
   footer{flex-direction:column;text-align:center}
   .score-banner{flex-direction:column;gap:16px;padding:24px}
   .score-sep{display:none}
+  .reviews-inner{max-width:none}
+  .reviews-grid{
+    display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+    margin-top:28px;padding:0 2px 6px;-webkit-overflow-scrolling:touch;
+  }
+  .reviews-grid::-webkit-scrollbar{height:6px}
+  .reviews-grid::-webkit-scrollbar-thumb{background:rgba(0,119,168,.28);border-radius:999px}
+  .review-card{
+    flex:0 0 82%;scroll-snap-align:start;min-height:244px;
+    padding:28px 22px;
+  }
   .hero{min-height:540px;height:90svh}
   .hero-content{padding:0 20px 42px}
   .hero-eyebrow{font-size:.64rem;margin-bottom:10px}
@@ -1150,6 +1163,21 @@ function reorderSectionsForMobile() {
   prezzi.insertAdjacentElement('afterend', exp);
 }
 reorderSectionsForMobile();
+
+// In fondo pagina la sticky mobile si attenua per non
+// competere con la CTA principale della sezione finale.
+function setupMobileStickyCtaDim() {
+  const sticky = document.querySelector('.mobile-sticky-cta');
+  if (!sticky || !window.matchMedia || !window.matchMedia('(max-width: 960px)').matches) return;
+  const target = document.querySelector('.final-cta') || document.querySelector('footer');
+  if (!target || !('IntersectionObserver' in window)) return;
+  const ioSticky = new IntersectionObserver((entries) => {
+    const visible = entries.some((e) => e.isIntersecting);
+    sticky.classList.toggle('is-dimmed', visible);
+  }, { threshold: 0.2 });
+  ioSticky.observe(target);
+}
+setupMobileStickyCtaDim();
 
 function setupGalleryRotation(pool) {
   if (!pool || pool.length < 2) return;
