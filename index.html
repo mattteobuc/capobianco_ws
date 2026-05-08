@@ -1118,6 +1118,9 @@ function setupGalleryRotation(pool) {
     wrap.classList.add(dirClass);
 
     img.classList.add('gal-current');
+    img.style.animation = '';
+    img.style.opacity = '';
+    img.style.transform = '';
     const next = img.cloneNode(true);
     next.src = nextSrc;
     next.classList.remove('gal-current');
@@ -1129,12 +1132,14 @@ function setupGalleryRotation(pool) {
       const finalizeSwap = () => {
         if (finished) return;
         finished = true;
-        img.src = nextSrc;
-        img.classList.remove('gal-current');
-        // Attende un frame per evitare il flash nell'istante
-        // in cui si rimuove il layer entrante.
+        // Promuove il layer entrante a base evitando il flash
+        // dovuto all'aggiornamento di src sul layer uscente.
+        next.classList.remove('gal-next');
+        next.style.animation = 'none';
+        next.style.transform = 'translateZ(0)';
+        next.style.opacity = '1';
+        img.remove();
         window.requestAnimationFrame(() => {
-          next.remove();
           wrap.classList.remove(dirClass);
         });
       };
