@@ -303,6 +303,8 @@ h2.serif.onblue em{color:var(--aqua)}
 .gal-item img{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transition:transform .55s ease;
+  backface-visibility:hidden;transform:translateZ(0);
+  will-change:transform,opacity;
 }
 .gal-item:hover img:not(.gal-next){transform:scale(1.04)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
@@ -1123,12 +1125,21 @@ function setupGalleryRotation(pool) {
 
     const mountAndFinalize = () => {
       wrap.appendChild(next);
-      window.setTimeout(() => {
+      let finished = false;
+      const finalizeSwap = () => {
+        if (finished) return;
+        finished = true;
         img.src = nextSrc;
         img.classList.remove('gal-current');
-        next.remove();
-        wrap.classList.remove(dirClass);
-      }, animationMs);
+        // Attende un frame per evitare il flash nell'istante
+        // in cui si rimuove il layer entrante.
+        window.requestAnimationFrame(() => {
+          next.remove();
+          wrap.classList.remove(dirClass);
+        });
+      };
+      next.addEventListener('animationend', finalizeSwap, { once: true });
+      window.setTimeout(finalizeSwap, animationMs + 80);
     };
 
     if (typeof next.decode === 'function') {
