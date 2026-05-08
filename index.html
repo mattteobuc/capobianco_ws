@@ -191,6 +191,31 @@ body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);ove
 .hero-wave{
   position:absolute;bottom:-1px;left:0;width:100%;z-index:3;line-height:0;
 }
+.mobile-gallery-preview{
+  display:none;background:var(--sand);padding:18px 20px 10px;
+}
+.mobile-gallery-head{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:12px;
+}
+.mobile-gallery-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;line-height:1.05;color:var(--ink);margin:0;
+}
+.mobile-gallery-jump{
+  color:var(--ocean);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;font-weight:700;border-bottom:1px solid rgba(0,119,168,.35);padding-bottom:2px;flex-shrink:0;
+}
+.mobile-gallery-track{
+  display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding-bottom:6px;-webkit-overflow-scrolling:touch;
+}
+.mobile-gallery-track::-webkit-scrollbar{height:6px}
+.mobile-gallery-track::-webkit-scrollbar-thumb{background:rgba(0,119,168,.3);border-radius:999px}
+.mobile-gallery-card{
+  flex:0 0 78%;aspect-ratio:4/3;scroll-snap-align:start;
+  border-radius:14px;overflow:hidden;position:relative;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);background:#d6dde2;
+}
+.mobile-gallery-card img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ─── BADGES STRIP ───────────────────── */
 .badges{
@@ -514,35 +539,65 @@ footer{
   0%,100%{box-shadow:0 6px 20px rgba(37,211,102,.4)}
   50%{box-shadow:0 6px 32px rgba(37,211,102,.6)}
 }
+.mobile-sticky-cta{
+  display:none;position:fixed;left:12px;right:12px;
+  bottom:calc(10px + env(safe-area-inset-bottom));z-index:350;
+  padding:8px;border-radius:14px;background:rgba(8,24,38,.88);
+  border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(6px);
+}
+.mobile-sticky-cta a{
+  min-height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  width:100%;text-decoration:none;background:#25D366;color:#fff;
+  font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.mobile-sticky-cta a:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
 /* ─── RESPONSIVE ─────────────────────── */
 @media(max-width:960px){
+  body{overflow-x:hidden}
   .topbar,.topbar.solid{padding:10px 16px}
   .logo{padding:5px 8px}
   .logo img{height:32px;max-width:110px}
   .nav-links{display:none}
-  section{padding:68px 20px}
+  section{padding:62px 20px}
+  #galleria{scroll-margin-top:76px}
   .about-grid{grid-template-columns:1fr;gap:36px}
   .about-visuals{height:320px;order:-1}
   .exp-grid,.pricing-grid,.reviews-grid,.location-grid{grid-template-columns:1fr}
   .loc-info{padding:56px 24px}
-  .gallery-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:none}
-  .gal-item{aspect-ratio:1/1;min-height:140px}
+  .gallery-wrap{padding:24px 0 70px}
+  .gallery-header{padding:0 20px;margin:0 0 16px}
+  .gallery-mosaic{
+    display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:0 20px 6px;-webkit-overflow-scrolling:touch;
+  }
+  .gallery-mosaic::-webkit-scrollbar{height:6px}
+  .gallery-mosaic::-webkit-scrollbar-thumb{background:rgba(0,119,168,.3);border-radius:999px}
+  .gal-item{flex:0 0 78%;aspect-ratio:4/3;min-height:180px;scroll-snap-align:start}
   .gal-item.big,.gal-item.tall{grid-column:span 1;grid-row:span 1}
   .badges{grid-template-columns:repeat(3,1fr)}
   .badge-item:nth-child(4),.badge-item:nth-child(5){border-top:1px solid rgba(255,255,255,.12)}
+  .badge-item:nth-child(5){display:none}
   footer{flex-direction:column;text-align:center}
   .score-banner{flex-direction:column;gap:16px;padding:24px}
   .score-sep{display:none}
-  .hero-content{padding:0 20px 62px}
-  .hero-thumbs{grid-template-columns:repeat(2,minmax(110px,1fr));max-width:100%}
-  .hero-row{gap:18px;margin-top:22px}
+  .hero{min-height:540px;height:90svh}
+  .hero-content{padding:0 20px 42px}
+  .hero-eyebrow{font-size:.64rem;margin-bottom:10px}
+  .hero-thumbs{display:none}
+  .hero-row{gap:14px;margin-top:16px}
   .hero-btns{width:100%}
-  .btn-wa{width:100%;padding:13px 18px;font-size:.74rem;letter-spacing:.06em}
-  .btn-ghost{padding:13px 20px}
+  .btn-wa{width:100%;padding:13px 16px;font-size:.72rem;letter-spacing:.05em;min-height:46px}
+  .btn-ghost{padding:12px 18px;min-height:44px}
   .hero-gallery-link{display:inline-flex;align-items:center;gap:8px}
-  .hero h1{font-size:clamp(2.2rem,10vw,3.15rem);line-height:1.08}
-  .hero-desc{font-size:.97rem;line-height:1.68}
+  .hero h1{font-size:clamp(2.05rem,9vw,2.85rem);line-height:1.05}
+  .hero-desc{
+    font-size:.93rem;line-height:1.58;max-width:none;display:-webkit-box;
+    line-clamp:2;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .mobile-gallery-preview{display:block}
+  .mobile-sticky-cta{display:block}
+  .wa-btn{display:none}
   .lead{font-size:.96rem;line-height:1.76}
   .lightbox{padding:14px}
   .lightbox-close{top:10px;right:10px}
@@ -621,6 +676,25 @@ footer{
     <svg viewBox="0 0 1440 54" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M0 54L60 48.6C120 43.2 240 32.4 360 27.1C480 21.7 600 21.7 720 27C840 32.3 960 43 1080 48.3C1200 53.6 1320 53.6 1380 53.7L1440 54V0H0V54Z" fill="#0077A8"/>
     </svg>
+  </div>
+</div>
+
+<!-- MOBILE GALLERY PREVIEW -->
+<div class="mobile-gallery-preview" aria-label="Anteprima galleria mobile">
+  <div class="mobile-gallery-head">
+    <h3 class="mobile-gallery-title">Uno sguardo<br>alla struttura</h3>
+    <a href="#galleria" class="mobile-gallery-jump">Guarda tutto</a>
+  </div>
+  <div class="mobile-gallery-track">
+    <a href="#galleria" class="mobile-gallery-card" aria-label="Vai alla galleria fotografica">
+      <img src="/images/gallery-main.avif" alt="Panorama Capobianco">
+    </a>
+    <a href="#galleria" class="mobile-gallery-card" aria-label="Vai alla galleria fotografica">
+      <img src="/images/gallery-2.avif" alt="Tramonto sul mare">
+    </a>
+    <a href="#galleria" class="mobile-gallery-card" aria-label="Vai alla galleria fotografica">
+      <img src="/images/gallery-3.avif" alt="Scogliera di Capobianco">
+    </a>
   </div>
 </div>
 
@@ -918,6 +992,9 @@ footer{
 </footer>
 
 <a href="https://wa.me/393270761520?text=Ciao!%20Vorrei%20verificare%20la%20disponibilit%C3%A0." class="wa-btn" target="_blank" title="Verifica disponibilità su WhatsApp">💬</a>
+<div class="mobile-sticky-cta">
+  <a href="https://wa.me/393270761520?text=Ciao!%20Vorrei%20verificare%20la%20disponibilit%C3%A0." target="_blank">💬 Verifica disponibilità</a>
+</div>
 
 <!-- Lightbox immagini galleria -->
 <div id="gallery-lightbox" class="lightbox" aria-hidden="true">
@@ -1063,6 +1140,16 @@ async function applyImages() {
 }
 
 applyImages();
+
+// Riordino mobile non distruttivo: mantiene desktop invariato.
+function reorderSectionsForMobile() {
+  if (!window.matchMedia || !window.matchMedia('(max-width: 960px)').matches) return;
+  const exp = document.getElementById('esperienze');
+  const prezzi = document.getElementById('prezzi');
+  if (!exp || !prezzi) return;
+  prezzi.insertAdjacentElement('afterend', exp);
+}
+reorderSectionsForMobile();
 
 function setupGalleryRotation(pool) {
   if (!pool || pool.length < 2) return;
