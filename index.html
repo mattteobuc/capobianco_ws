@@ -303,15 +303,15 @@ h2.serif.onblue em{color:var(--aqua)}
 .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
 .gal-item:hover img{transform:scale(1.07)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
-.gal-item.is-fading img{opacity:.88}
-.gal-item.slide-down img{animation:slotDown .55s ease both}
-.gal-item.slide-left img{animation:slotLeft .55s ease both}
-.gal-item.slide-up img{animation:slotUp .55s ease both}
-.gal-item.slide-right img{animation:slotRight .55s ease both}
-@keyframes slotDown{from{opacity:.35;transform:translateY(-18px) scale(1.02)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes slotLeft{from{opacity:.35;transform:translateX(20px) scale(1.02)}to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes slotUp{from{opacity:.35;transform:translateY(18px) scale(1.02)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes slotRight{from{opacity:.35;transform:translateX(-20px) scale(1.02)}to{opacity:1;transform:translateX(0) scale(1)}}
+.gal-item.is-fading img{opacity:.74;transition:opacity .68s ease,transform .68s ease}
+.gal-item.slide-down img{animation:slotDown .72s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.slide-left img{animation:slotLeft .72s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.slide-up img{animation:slotUp .72s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.slide-right img{animation:slotRight .72s cubic-bezier(.22,.61,.36,1) both}
+@keyframes slotDown{from{opacity:.28;transform:translateY(-14px) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slotLeft{from{opacity:.28;transform:translateX(14px) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes slotUp{from{opacity:.28;transform:translateY(14px) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slotRight{from{opacity:.28;transform:translateX(-14px) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
 .gal-overlay{
   position:absolute;inset:0;background:rgba(0,30,52,.0);
   transition:background .3s;display:flex;align-items:center;justify-content:center;
@@ -526,7 +526,7 @@ footer{
   .gal-item.slide-down img,
   .gal-item.slide-left img,
   .gal-item.slide-up img,
-  .gal-item.slide-right img{animation-duration:.4s}
+  .gal-item.slide-right img{animation-duration:.48s}
 }
 </style>
 </head>
@@ -1045,25 +1045,38 @@ function setupGalleryRotation(pool) {
   const slots = ['#slot-1 img', '#slot-2 img', '#slot-3 img', '#slot-4 img'];
   const motionClasses = ['slide-down', 'slide-left', 'slide-up', 'slide-right'];
   let pointer = 0;
+  let slotPointer = 0;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const intervalMs = reduceMotion ? 3400 : 3000;
+  const fadeOutMs = reduceMotion ? 140 : 260;
+  const classDurationMs = reduceMotion ? 220 : 760;
 
-  setInterval(() => {
-    // Ruota tutti gli slot secondari con direzioni differenti
-    [0, 1, 2, 3].forEach((slotIndex) => {
-      const img = document.querySelector(slots[slotIndex]);
-      const wrap = img?.closest('.gal-item');
-      if (!img || !wrap) return;
-      wrap.classList.add('is-fading');
-      wrap.classList.remove('slide-down', 'slide-left', 'slide-up', 'slide-right');
-      const nextSrc = pool[pointer % pool.length];
-      pointer += 1;
-      window.setTimeout(() => {
-        img.src = nextSrc;
-        wrap.classList.add(motionClasses[slotIndex]);
-        wrap.classList.remove('is-fading');
-        window.setTimeout(() => wrap.classList.remove(motionClasses[slotIndex]), 560);
-      }, 220);
-    });
-  }, 4800);
+  if (window.__galleryRotationTimer) window.clearInterval(window.__galleryRotationTimer);
+
+  window.__galleryRotationTimer = window.setInterval(() => {
+    const slotIndex = slotPointer % slots.length;
+    slotPointer += 1;
+
+    const img = document.querySelector(slots[slotIndex]);
+    const wrap = img?.closest('.gal-item');
+    if (!img || !wrap) return;
+
+    const nextSrc = pool[pointer % pool.length];
+    pointer += 1;
+    if (!nextSrc || nextSrc === img.src) return;
+
+    wrap.classList.add('is-fading');
+    wrap.classList.remove('slide-down', 'slide-left', 'slide-up', 'slide-right');
+
+    window.setTimeout(() => {
+      img.src = nextSrc;
+      if (!reduceMotion) wrap.classList.add(motionClasses[slotIndex]);
+      wrap.classList.remove('is-fading');
+      if (!reduceMotion) {
+        window.setTimeout(() => wrap.classList.remove(motionClasses[slotIndex]), classDurationMs);
+      }
+    }, fadeOutMs);
+  }, intervalMs);
 }
 
 function setupGalleryLightbox() {
