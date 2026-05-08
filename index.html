@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CapoBianco Wild Glamping | Prenotazioni dirette a Punta Braccetto</title>
+  <meta
+    name="description"
+    content="CapoBianco Wild Glamping a Punta Braccetto: natura autentica, relax e mare vicino. Controlla disponibilità e prenota direttamente via WhatsApp o email."
+  />
+  <meta property="og:title" content="CapoBianco Wild Glamping | Prenotazioni dirette" />
+  <meta
+    property="og:description"
+    content="Scopri l'esperienza wild glamping a Punta Braccetto. Prezzi chiari, contatto rapido e prenotazione senza frizioni."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/images/hero.jpg" />
+  <meta property="og:locale" content="it_IT" />
+  <meta name="theme-color" content="#35524a" />
+  <style>
+    :root {
+      --sand-50: #f6f1e8;
+      --sand-100: #efe6d8;
+      --sage-700: #35524a;
+      --sage-600: #43675e;
+      --sea-600: #2f6673;
+      --sea-500: #3f7f8f;
+      --ink-900: #1d2523;
+      --ink-700: #3f4d48;
+      --white: #ffffff;
+      --border: #d9d5cb;
+      --success: #2f7a57;
+      --shadow: 0 10px 30px rgba(29, 37, 35, 0.08);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --maxw: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--ink-900);
+      background: var(--sand-50);
+      line-height: 1.5;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: var(--radius-sm);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(100% - 2rem, var(--maxw));
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      margin: 0 0 0.75rem;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      line-height: 1.2;
+      color: var(--ink-900);
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--ink-700);
+      max-width: 65ch;
+    }
+
+    /* Header sticky con CTA principale */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      background: rgba(246, 241, 232, 0.92);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      color: var(--sage-700);
+    }
+
+    .brand small {
+      display: block;
+      font-weight: 500;
+      color: var(--ink-700);
+      letter-spacing: 0;
+      font-size: 0.8rem;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.8rem 1.1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn:focus-visible,
+    .faq-trigger:focus-visible,
+    a:focus-visible {
+      outline: 3px solid var(--sea-500);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: var(--sage-700);
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background: var(--sage-600);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--ink-900);
+    }
+
+    .btn-secondary:hover {
+      background: #f9f7f2;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: #eef5f3;
+      color: var(--sage-700);
+      border: 1px solid #d4e3de;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .hero {
+      padding: 3.25rem 0 2.5rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.1;
+      color: var(--ink-900);
+    }
+
+    .hero p {
+      margin: 0 0 1.2rem;
+      color: var(--ink-700);
+      font-size: 1.02rem;
+      max-width: 60ch;
+    }
+
+    .micro-benefits {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+
+    .micro-benefit {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.85rem;
+      color: var(--ink-700);
+      font-weight: 600;
+    }
+
+    .hero-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-note {
+      margin-top: 0.75rem;
+      color: var(--ink-700);
+      font-size: 0.9rem;
+    }
+
+    .trust {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .cards {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 0.6rem;
+      font-size: 1.05rem;
+      color: var(--ink-900);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-700);
+    }
+
+    .pricing-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .pricing-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .pricing-card.featured {
+      border: 2px solid var(--sage-600);
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--sage-700);
+      margin: 0.2rem 0;
+    }
+
+    .price small {
+      font-size: 0.9rem;
+      color: var(--ink-700);
+      font-weight: 600;
+    }
+
+    .pricing-list {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: var(--ink-700);
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .alert-soft {
+      margin-top: 1rem;
+      background: #fff7e9;
+      border: 1px solid #f0dfb6;
+      color: #7a6030;
+      border-radius: var(--radius-sm);
+      padding: 0.8rem 0.9rem;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .gallery-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .gallery-grid figure {
+      margin: 0;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-grid img {
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .gallery-grid figcaption {
+      padding: 0.55rem 0.65rem;
+      font-size: 0.84rem;
+      color: var(--ink-700);
+    }
+
+    .reviews-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .review {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .review strong {
+      display: block;
+      margin-top: 0.7rem;
+      color: var(--ink-900);
+    }
+
+    .faq-list {
+      margin-top: 1.2rem;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      overflow: hidden;
+    }
+
+    .faq-trigger {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: none;
+      padding: 0.95rem 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink-900);
+      cursor: pointer;
+    }
+
+    .faq-panel {
+      display: none;
+      padding: 0 1rem 1rem;
+      color: var(--ink-700);
+    }
+
+    .faq-item[aria-expanded="true"] .faq-panel {
+      display: block;
+    }
+
+    .contact-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .map-box {
+      background: var(--white);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      min-height: 250px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--ink-700);
+      padding: 1rem;
+    }
+
+    .final-cta {
+      margin-top: 1.2rem;
+      background: linear-gradient(120deg, #35524a, #2f6673);
+      color: var(--white);
+      border-radius: var(--radius);
+      padding: 1.2rem;
+    }
+
+    .final-cta h3 {
+      margin: 0 0 0.4rem;
+    }
+
+    .final-cta p {
+      margin: 0 0 1rem;
+      color: #e8f4f1;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0 2.2rem;
+      color: var(--ink-700);
+      font-size: 0.95rem;
+    }
+
+    footer p {
+      margin: 0.25rem 0;
+    }
+
+    @media (min-width: 720px) {
+      .micro-benefits {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .reviews-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" aria-label="Intestazione sito">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="Vai all'inizio pagina">
+        CapoBianco
+        <small>Wild Glamping</small>
+      </a>
+      <a class="btn btn-primary" href="#contatti">Prenota ora</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero: beneficio chiaro + doppia CTA -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="pill">Punta Braccetto, Sicilia</span>
+          <h1>La tua pausa wild vicino al mare, senza rinunciare al comfort essenziale</h1>
+          <p>
+            Vivi un'esperienza autentica tra natura, silenzio e cielo stellato.
+            A CapoBianco trovi un ritmo più umano e una prenotazione semplice, diretta e veloce.
+          </p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#prezzi">Controlla disponibilità</a>
+            <a
+              class="btn btn-secondary"
+              href="https://wa.me/393270761520?text=Ciao%20CapoBianco%2C%20vorrei%20informazioni%20su%20disponibilit%C3%A0%20e%20prezzi."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Scrivici su WhatsApp
+            </a>
+          </div>
+          <p class="hero-note">
+            <span class="trust">Risposta rapida su WhatsApp.</span> Nessun impegno nella richiesta.
+          </p>
+          <div class="micro-benefits" aria-label="Vantaggi principali">
+            <div class="micro-benefit">Natura autentica</div>
+            <div class="micro-benefit">Vicino al mare</div>
+            <div class="micro-benefit">Relax totale</div>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Anteprima struttura">
+          <img src="/images/hero.jpg" alt="Vista esterna di CapoBianco Wild Glamping al tramonto" />
+          <p class="hero-note">
+            Alta stagione: disponibilità limitata nelle settimane centrali.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Perché scegliere -->
+    <section class="section" id="perche">
+      <div class="container">
+        <h2 class="section-title">Perché scegliere CapoBianco</h2>
+        <p class="section-subtitle">
+          Un soggiorno pensato per chi cerca semplicità, contatto con la natura e un'accoglienza concreta.
+        </p>
+        <div class="cards">
+          <article class="card">
+            <h3>Atmosfera autentica</h3>
+            <p>Spazi pensati per rallentare e ritrovare energia, con un'esperienza wild ma curata.</p>
+          </article>
+          <article class="card">
+            <h3>Posizione strategica</h3>
+            <p>A pochi minuti dalle spiagge e dalle calette della zona di Punta Braccetto.</p>
+          </article>
+          <article class="card">
+            <h3>Prenotazione diretta</h3>
+            <p>Contatti immediati via WhatsApp o email, senza passaggi inutili e senza incertezze.</p>
+          </article>
+          <article class="card">
+            <h3>Accoglienza trasparente</h3>
+            <p>Prezzi chiari, informazioni semplici e supporto rapido per organizzare il soggiorno.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prezzi e pacchetti -->
+    <section class="section" id="prezzi">
+      <div class="container">
+        <h2 class="section-title">Alloggi e Prezzi</h2>
+        <p class="section-subtitle">
+          Scegli la formula più adatta a te. Per confermare la prenotazione, inviaci una richiesta: ti rispondiamo con disponibilità reale e dettagli finali.
+        </p>
+
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <h3>Notte Wild</h3>
+            <p class="price">da €XX <small>/ notte</small></p>
+            <ul class="pricing-list">
+              <li>Alloggio per 1 notte</li>
+              <li>Biancheria base inclusa</li>
+              <li>Parcheggio interno</li>
+              <li>Supporto host per check-in</li>
+            </ul>
+            <a
+              class="btn btn-secondary"
+              href="mailto:enneore@gmail.com?subject=Richiesta%20Notte%20Wild%20-%20CapoBianco"
+            >
+              Richiedi Notte Wild
+            </a>
+          </article>
+
+          <article class="pricing-card featured">
+            <h3>Weekend Escape</h3>
+            <p class="price">da €XX <small>/ 2 notti</small></p>
+            <ul class="pricing-list">
+              <li>Alloggio per 2 notti</li>
+              <li>Late check-out (se disponibile)</li>
+              <li>Welcome kit essenziale</li>
+              <li>Assistenza rapida via WhatsApp</li>
+            </ul>
+            <a
+              class="btn btn-primary"
+              href="https://wa.me/393270761520?text=Ciao%20CapoBianco%2C%20vorrei%20prenotare%20il%20pacchetto%20Weekend%20Escape."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Prenota Weekend
+            </a>
+          </article>
+
+          <article class="pricing-card">
+            <h3>Settimana Natura</h3>
+            <p class="price">da €XX <small>/ 7 notti</small></p>
+            <ul class="pricing-list">
+              <li>Alloggio per 7 notti</li>
+              <li>Tariffa agevolata lungo soggiorno</li>
+              <li>Consigli locali personalizzati</li>
+              <li>Contatto diretto con host</li>
+            </ul>
+            <a
+              class="btn btn-secondary"
+              href="mailto:enneore@gmail.com?subject=Richiesta%20Settimana%20Natura%20-%20CapoBianco"
+            >
+              Richiedi offerta
+            </a>
+          </article>
+        </div>
+
+        <p class="alert-soft" role="status">
+          Alta stagione: molte date si esauriscono in anticipo. Ti consigliamo di bloccare la richiesta appena scegli il periodo.
+        </p>
+      </div>
+    </section>
+
+    <!-- Galleria placeholder -->
+    <section class="section" id="galleria">
+      <div class="container">
+        <h2 class="section-title">Galleria</h2>
+        <p class="section-subtitle">
+          Alcuni scorci dell'esperienza CapoBianco. (Sostituisci queste immagini con foto reali della struttura.)
+        </p>
+        <div class="gallery-grid">
+          <figure>
+            <img src="/images/gallery-1.jpg" alt="Alloggio glamping immerso nella natura" />
+            <figcaption>Alloggio wild glamping</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/gallery-2.jpg" alt="Area esterna relax al tramonto" />
+            <figcaption>Zona relax</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/gallery-3.jpg" alt="Dettaglio ambiente naturale vicino alla struttura" />
+            <figcaption>Natura circostante</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/gallery-4.jpg" alt="Percorso verso il mare vicino a CapoBianco" />
+            <figcaption>Vicinanza al mare</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/gallery-5.jpg" alt="Spazio esterno serale con illuminazione calda" />
+            <figcaption>Atmosfera serale</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/gallery-6.jpg" alt="Panoramica di Punta Braccetto" />
+            <figcaption>Punta Braccetto</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recensioni -->
+    <section class="section" id="recensioni">
+      <div class="container">
+        <h2 class="section-title">Cosa dicono gli ospiti</h2>
+        <p class="section-subtitle">
+          Esperienze reali di chi ha scelto CapoBianco per una pausa tra mare e natura.
+        </p>
+        <div class="reviews-grid">
+          <article class="review">
+            <p>“Posto tranquillo e autentico. Perfetto per staccare e respirare Sicilia vera.”</p>
+            <strong>Francesca — ★★★★★</strong>
+          </article>
+          <article class="review">
+            <p>“Prenotazione semplice e host sempre disponibile. Posizione comodissima.”</p>
+            <strong>Marco — ★★★★★</strong>
+          </article>
+          <article class="review">
+            <p>“Weekend rilassante, atmosfera bellissima la sera. Torneremo sicuramente.”</p>
+            <strong>Elena — ★★★★☆</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ con accordion JS vanilla -->
+    <section class="section" id="faq">
+      <div class="container">
+        <h2 class="section-title">Domande frequenti</h2>
+        <p class="section-subtitle">
+          Le informazioni principali per prenotare in modo rapido e senza dubbi.
+        </p>
+
+        <div class="faq-list" role="list">
+          <article class="faq-item" aria-expanded="false">
+            <button class="faq-trigger" aria-expanded="false">
+              Quali sono gli orari di check-in e check-out?
+            </button>
+            <div class="faq-panel">
+              Check-in e check-out vengono confermati in fase di prenotazione. Scrivici su WhatsApp per la fascia aggiornata.
+            </div>
+          </article>
+
+          <article class="faq-item" aria-expanded="false">
+            <button class="faq-trigger" aria-expanded="false">
+              La struttura è adatta a chi cerca relax?
+            </button>
+            <div class="faq-panel">
+              Sì, CapoBianco è pensato per un soggiorno tranquillo, con ritmi lenti e contatto con la natura.
+            </div>
+          </article>
+
+          <article class="faq-item" aria-expanded="false">
+            <button class="faq-trigger" aria-expanded="false">
+              Come funziona la richiesta di prenotazione?
+            </button>
+            <div class="faq-panel">
+              Clicca su una CTA, inviaci periodo e numero ospiti: ricevi una risposta rapida con disponibilità e dettagli.
+            </div>
+          </article>
+
+          <article class="faq-item" aria-expanded="false">
+            <button class="faq-trigger" aria-expanded="false">
+              C'è parcheggio disponibile?
+            </button>
+            <div class="faq-panel">
+              Sì, è disponibile parcheggio in struttura. Confermiamo i dettagli al momento della richiesta.
+            </div>
+          </article>
+
+          <article class="faq-item" aria-expanded="false">
+            <button class="faq-trigger" aria-expanded="false">
+              Posso chiedere informazioni senza impegno?
+            </button>
+            <div class="faq-panel">
+              Certamente. La richiesta è senza impegno: puoi scriverci su WhatsApp o email per valutare con calma.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contatti + mappa/coordinate -->
+    <section class="section" id="contatti">
+      <div class="container">
+        <h2 class="section-title">Contatti e posizione</h2>
+        <p class="section-subtitle">
+          Ti bastano 2 minuti per inviarci una richiesta. Ti aiutiamo a scegliere la soluzione migliore.
+        </p>
+
+        <div class="contact-grid">
+          <article class="card">
+            <h3>CapoBianco Wild Glamping</h3>
+            <p>Via dell'Oca, Punta Braccetto<br />97017 Santa Croce Camerina (RG)</p>
+            <p><strong>Coordinate:</strong> 36.812572, 14.469384</p>
+            <p><strong>WhatsApp:</strong> <a href="tel:+393270761520">+39 327 076 1520</a></p>
+            <p><strong>Email:</strong> <a href="mailto:enneore@gmail.com">enneore@gmail.com</a></p>
+            <div class="btn-row" style="margin-top: 0.6rem;">
+              <a
+                class="btn btn-primary"
+                href="https://wa.me/393270761520?text=Ciao%20CapoBianco%2C%20vorrei%20verificare%20la%20disponibilit%C3%A0."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Prenota su WhatsApp
+              </a>
+              <a class="btn btn-secondary" href="mailto:enneore@gmail.com?subject=Richiesta%20disponibilit%C3%A0%20CapoBianco">
+                Invia email
+              </a>
+            </div>
+          </article>
+
+          <aside class="map-box" aria-label="Box mappa con coordinate">
+            <div>
+              <strong>Mappa / Embed</strong><br />
+              Inserisci qui iframe Google Maps oppure mappa personalizzata.<br /><br />
+              <em>Coordinate:</em> 36.812572, 14.469384
+            </div>
+          </aside>
+        </div>
+
+        <div class="final-cta" aria-label="Call to action finale">
+          <h3>Pronto a vivere la tua vacanza wild?</h3>
+          <p>Blocca le date migliori ora. Richiesta veloce, risposta rapida, nessun impegno.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#prezzi">Controlla disponibilità</a>
+            <a
+              class="btn btn-secondary"
+              href="https://wa.me/393270761520?text=Ciao%20CapoBianco%2C%20vorrei%20prenotare."
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Scrivici su WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>CapoBianco Wild Glamping</strong> — Punta Braccetto, Santa Croce Camerina (RG)</p>
+      <p>WhatsApp: <a href="tel:+393270761520">+39 327 076 1520</a> · Email: <a href="mailto:enneore@gmail.com">enneore@gmail.com</a></p>
+      <p>Prenotazione diretta, comunicazione trasparente, supporto rapido prima del soggiorno.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Accordion FAQ in JavaScript vanilla: apre/chiude una risposta alla volta
+    (function () {
+      const items = document.querySelectorAll(".faq-item");
+
+      items.forEach((item) => {
+        const trigger = item.querySelector(".faq-trigger");
+        trigger.addEventListener("click", () => {
+          const isOpen = item.getAttribute("aria-expanded") === "true";
+
+          items.forEach((el) => {
+            el.setAttribute("aria-expanded", "false");
+            const btn = el.querySelector(".faq-trigger");
+            btn.setAttribute("aria-expanded", "false");
+          });
+
+          if (!isOpen) {
+            item.setAttribute("aria-expanded", "true");
+            trigger.setAttribute("aria-expanded", "true");
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
