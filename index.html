@@ -301,19 +301,20 @@ h2.serif.onblue em{color:var(--aqua)}
 .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
 .gal-item:hover img{transform:scale(1.07)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
-.gal-item.is-fading img{opacity:.55;transition:opacity .35s ease,transform .55s ease}
+.gal-item.is-fading img{opacity:.88}
+.gal-item.slide-down img{animation:slotDown .55s ease both}
+.gal-item.slide-left img{animation:slotLeft .55s ease both}
+.gal-item.slide-up img{animation:slotUp .55s ease both}
+.gal-item.slide-right img{animation:slotRight .55s ease both}
+@keyframes slotDown{from{opacity:.35;transform:translateY(-18px) scale(1.02)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slotLeft{from{opacity:.35;transform:translateX(20px) scale(1.02)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes slotUp{from{opacity:.35;transform:translateY(18px) scale(1.02)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slotRight{from{opacity:.35;transform:translateX(-20px) scale(1.02)}to{opacity:1;transform:translateX(0) scale(1)}}
 .gal-overlay{
   position:absolute;inset:0;background:rgba(0,30,52,.0);
   transition:background .3s;display:flex;align-items:center;justify-content:center;
 }
 .gal-item:hover .gal-overlay{background:rgba(0,30,52,.25)}
-.gal-zoom-hint{
-  position:absolute;left:10px;bottom:10px;z-index:2;
-  background:rgba(7,15,22,.62);color:#fff;border:1px solid rgba(255,255,255,.28);
-  border-radius:999px;padding:5px 10px;font-size:.66rem;letter-spacing:.05em;
-  opacity:0;transform:translateY(5px);transition:opacity .2s,transform .2s;
-}
-.gal-item:hover .gal-zoom-hint{opacity:1;transform:translateY(0)}
 
 /* ─── PRICING ────────────────────────── */
 .pricing-inner{max-width:1100px;margin:0 auto}
@@ -394,17 +395,16 @@ h2.serif.onblue em{color:var(--aqua)}
 }
 .loc-lbl{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
 .loc-val{font-size:.9rem;color:var(--white);margin-top:2px;font-weight:300;line-height:1.5}
-.loc-actions{margin-top:10px}
+.loc-actions{margin-top:2px;display:inline-flex;align-items:center}
 .loc-photo{background:url('/images/location-cover.avif') center/cover no-repeat;background-color:#2b4657;position:relative;}
 .loc-photo-over{position:absolute;inset:0;background:rgba(0,30,52,.3);display:flex;align-items:center;justify-content:center;}
 .btn-maps{
-  background:linear-gradient(130deg,#ffffff 0%,#eef7f4 100%);
-  color:var(--ink);padding:12px 18px;border-radius:100px;border:1px solid rgba(0,119,168,.18);
-  text-decoration:none;font-size:.74rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  display:inline-flex;align-items:center;gap:8px;transition:background .25s,transform .2s;
+  background:transparent;color:rgba(255,255,255,.92);padding:0;border-radius:0;border:none;
+  text-decoration:none;font-size:.72rem;font-weight:600;letter-spacing:.02em;text-transform:none;
+  display:inline-flex;align-items:center;gap:6px;transition:color .2s,transform .2s;
 }
-.btn-maps:hover{background:#fff;transform:translateY(-1px)}
-.btn-maps-inline{box-shadow:0 8px 22px rgba(0,0,0,.16)}
+.btn-maps:hover{color:#9fe7dd;transform:translateY(-1px)}
+.btn-maps-inline{box-shadow:none;margin-left:6px;opacity:.95}
 
 /* ─── LIGHTBOX GALLERIA ───────────────── */
 .lightbox{
@@ -699,27 +699,22 @@ footer{
     <div class="gal-item big">
       <img src="/images/gallery-main.avif" alt="Panorama Capobianco" id="main-gal-img">
       <div class="gal-overlay"></div>
-      <span class="gal-zoom-hint">Clicca per ingrandire</span>
     </div>
     <div class="gal-item" id="slot-1">
       <img src="/images/gallery-1.avif" alt="Dome house">
       <div class="gal-overlay"></div>
-      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-2">
       <img src="/images/gallery-2.avif" alt="Tramonto">
       <div class="gal-overlay"></div>
-      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-3">
       <img src="/images/gallery-3.avif" alt="Scogliera">
       <div class="gal-overlay"></div>
-      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
     <div class="gal-item" id="slot-4">
       <img src="/images/gallery-4.avif" alt="Interno">
       <div class="gal-overlay"></div>
-      <span class="gal-zoom-hint">Ingrandisci</span>
     </div>
   </div>
 </div>
@@ -825,7 +820,7 @@ footer{
           <div class="loc-val">Via dell'Oca, Punta Braccetto<br>97017 Santa Croce Camerina (RG)</div>
           <div class="loc-actions">
             <a href="https://maps.google.com/?q=36.812572,14.469384" target="_blank" class="btn-maps btn-maps-inline">
-              📍 Apri percorso su Google Maps
+              📍 Visualizza su Maps
             </a>
           </div>
         </div>
@@ -854,11 +849,7 @@ footer{
     </div>
   </div>
   <div class="loc-photo">
-    <div class="loc-photo-over">
-      <a href="https://maps.google.com/?q=36.812572,14.469384" target="_blank" class="btn-maps">
-        🗺️ Apri in Google Maps
-      </a>
-    </div>
+    <div class="loc-photo-over"></div>
   </div>
 </div>
 
@@ -1036,20 +1027,24 @@ applyImages();
 function setupGalleryRotation(pool) {
   if (!pool || pool.length < 2) return;
   const slots = ['#slot-1 img', '#slot-2 img', '#slot-3 img', '#slot-4 img'];
+  const motionClasses = ['slide-down', 'slide-left', 'slide-up', 'slide-right'];
   let pointer = 0;
 
   setInterval(() => {
-    // Ruota 2 slot alla volta con effetto lieve
-    [1, 3].forEach((slotIndex) => {
+    // Ruota tutti gli slot secondari con direzioni differenti
+    [0, 1, 2, 3].forEach((slotIndex) => {
       const img = document.querySelector(slots[slotIndex]);
       const wrap = img?.closest('.gal-item');
       if (!img || !wrap) return;
       wrap.classList.add('is-fading');
+      wrap.classList.remove('slide-down', 'slide-left', 'slide-up', 'slide-right');
       const nextSrc = pool[pointer % pool.length];
       pointer += 1;
       window.setTimeout(() => {
         img.src = nextSrc;
+        wrap.classList.add(motionClasses[slotIndex]);
         wrap.classList.remove('is-fading');
+        window.setTimeout(() => wrap.classList.remove(motionClasses[slotIndex]), 560);
       }, 220);
     });
   }, 4800);
@@ -1060,16 +1055,29 @@ function setupGalleryLightbox() {
   const closeBtn = document.getElementById('lightbox-close');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
-  const galleryImgs = Array.from(document.querySelectorAll('#galleria .gal-item img'));
-  if (!lightbox || !closeBtn || !lightboxImg || !galleryImgs.length) return;
+  if (!lightbox || !closeBtn || !lightboxImg) return;
 
   let currentIndex = 0;
   let lastFocused = null;
+  let currentList = [];
+
+  const galleryImgs = () => Array.from(document.querySelectorAll('#galleria .gal-item img'));
+  const getIndexFromSrc = (src) => galleryImgs().findIndex((node) => node.src === src);
+
+  const openByElement = (imgEl) => {
+    if (!imgEl) return;
+    currentList = galleryImgs();
+    const idx = currentList.findIndex((node) => node === imgEl);
+    openAt(idx >= 0 ? idx : 0);
+  };
 
   const openAt = (idx) => {
-    const img = galleryImgs[idx];
+    const liveList = galleryImgs();
+    if (!liveList.length) return;
+    const safeIdx = ((idx % liveList.length) + liveList.length) % liveList.length;
+    const img = liveList[safeIdx];
     if (!img) return;
-    currentIndex = idx;
+    currentIndex = safeIdx;
     lightboxImg.src = img.src;
     lightboxImg.alt = img.alt || 'Immagine galleria';
     lightboxCaption.textContent = img.alt || 'Panorama CapoBianco';
@@ -1085,16 +1093,17 @@ function setupGalleryLightbox() {
   };
 
   const step = (delta) => {
-    currentIndex = (currentIndex + delta + galleryImgs.length) % galleryImgs.length;
+    const liveList = galleryImgs();
+    if (!liveList.length) return;
+    currentIndex = (currentIndex + delta + liveList.length) % liveList.length;
     openAt(currentIndex);
   };
 
-  galleryImgs.forEach((img, idx) => {
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', () => {
-      lastFocused = img;
-      openAt(idx);
-    });
+  document.getElementById('galleria')?.addEventListener('click', (e) => {
+    const img = e.target.closest('.gal-item img');
+    if (!img) return;
+    lastFocused = img;
+    openByElement(img);
   });
 
   closeBtn.addEventListener('click', close);
