@@ -300,21 +300,34 @@ h2.serif.onblue em{color:var(--aqua)}
   max-width:1200px;margin:0 auto;
 }
 .gal-item{overflow:hidden;border-radius:14px;position:relative;cursor:pointer}
-.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .55s ease}
-.gal-item:hover img{transform:scale(1.07)}
+.gal-item img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .55s ease;
+}
+.gal-item:hover img{transform:scale(1.04)}
 .gal-item.big{grid-column:span 2;grid-row:span 2}
-.gal-item.is-fading img{opacity:.74;transition:opacity .68s ease,transform .68s ease}
-.gal-item.slide-down img{animation:slotDown .72s cubic-bezier(.22,.61,.36,1) both}
-.gal-item.slide-left img{animation:slotLeft .72s cubic-bezier(.22,.61,.36,1) both}
-.gal-item.slide-up img{animation:slotUp .72s cubic-bezier(.22,.61,.36,1) both}
-.gal-item.slide-right img{animation:slotRight .72s cubic-bezier(.22,.61,.36,1) both}
-@keyframes slotDown{from{opacity:.28;transform:translateY(-14px) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes slotLeft{from{opacity:.28;transform:translateX(14px) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes slotUp{from{opacity:.28;transform:translateY(14px) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes slotRight{from{opacity:.28;transform:translateX(-14px) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
+.gal-item img.gal-current{z-index:1}
+.gal-item img.gal-next{z-index:2;pointer-events:none}
+.gal-item.dir-down img.gal-current{animation:galOutDown .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-down img.gal-next{animation:galInDown .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-left img.gal-current{animation:galOutLeft .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-left img.gal-next{animation:galInLeft .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-up img.gal-current{animation:galOutUp .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-up img.gal-next{animation:galInUp .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-right img.gal-current{animation:galOutRight .9s cubic-bezier(.22,.61,.36,1) both}
+.gal-item.dir-right img.gal-next{animation:galInRight .9s cubic-bezier(.22,.61,.36,1) both}
+@keyframes galInDown{from{opacity:.25;transform:translateY(-18%) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes galOutDown{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:.25;transform:translateY(18%) scale(1.01)}}
+@keyframes galInLeft{from{opacity:.25;transform:translateX(18%) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes galOutLeft{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:.25;transform:translateX(-18%) scale(1.01)}}
+@keyframes galInUp{from{opacity:.25;transform:translateY(18%) scale(1.01)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes galOutUp{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:.25;transform:translateY(-18%) scale(1.01)}}
+@keyframes galInRight{from{opacity:.25;transform:translateX(-18%) scale(1.01)}to{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes galOutRight{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:.25;transform:translateX(18%) scale(1.01)}}
 .gal-overlay{
   position:absolute;inset:0;background:rgba(0,30,52,.0);
   transition:background .3s;display:flex;align-items:center;justify-content:center;
+  z-index:3;pointer-events:none;
 }
 .gal-item:hover .gal-overlay{background:rgba(0,30,52,.25)}
 
@@ -523,10 +536,14 @@ footer{
   .lead{font-size:.96rem;line-height:1.76}
   .lightbox{padding:14px}
   .lightbox-close{top:10px;right:10px}
-  .gal-item.slide-down img,
-  .gal-item.slide-left img,
-  .gal-item.slide-up img,
-  .gal-item.slide-right img{animation-duration:.48s}
+  .gal-item.dir-down img.gal-current,
+  .gal-item.dir-down img.gal-next,
+  .gal-item.dir-left img.gal-current,
+  .gal-item.dir-left img.gal-next,
+  .gal-item.dir-up img.gal-current,
+  .gal-item.dir-up img.gal-next,
+  .gal-item.dir-right img.gal-current,
+  .gal-item.dir-right img.gal-next{animation-duration:.62s}
 }
 </style>
 </head>
@@ -1043,13 +1060,13 @@ applyImages();
 function setupGalleryRotation(pool) {
   if (!pool || pool.length < 2) return;
   const slots = ['#slot-1 img', '#slot-2 img', '#slot-3 img', '#slot-4 img'];
-  const motionClasses = ['slide-down', 'slide-left', 'slide-up', 'slide-right'];
+  const slotDirections = ['down', 'left', 'up', 'right'];
+  const allDirClasses = ['dir-down', 'dir-left', 'dir-up', 'dir-right'];
   let pointer = 0;
   let slotPointer = 0;
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const intervalMs = reduceMotion ? 3400 : 3000;
-  const fadeOutMs = reduceMotion ? 140 : 260;
-  const classDurationMs = reduceMotion ? 220 : 760;
+  const intervalMs = reduceMotion ? 1800 : 700;
+  const animationMs = reduceMotion ? 260 : 900;
 
   if (window.__galleryRotationTimer) window.clearInterval(window.__galleryRotationTimer);
 
@@ -1065,17 +1082,25 @@ function setupGalleryRotation(pool) {
     pointer += 1;
     if (!nextSrc || nextSrc === img.src) return;
 
-    wrap.classList.add('is-fading');
-    wrap.classList.remove('slide-down', 'slide-left', 'slide-up', 'slide-right');
+    // Animazione continua: lo slide uscente e quello entrante
+    // si muovono nello stesso verso con un leggero overlap.
+    wrap.classList.remove(...allDirClasses);
+    const dirClass = `dir-${slotDirections[slotIndex]}`;
+    wrap.classList.add(dirClass);
+
+    img.classList.add('gal-current');
+    const next = img.cloneNode(true);
+    next.src = nextSrc;
+    next.classList.remove('gal-current');
+    next.classList.add('gal-next');
+    wrap.appendChild(next);
 
     window.setTimeout(() => {
       img.src = nextSrc;
-      if (!reduceMotion) wrap.classList.add(motionClasses[slotIndex]);
-      wrap.classList.remove('is-fading');
-      if (!reduceMotion) {
-        window.setTimeout(() => wrap.classList.remove(motionClasses[slotIndex]), classDurationMs);
-      }
-    }, fadeOutMs);
+      img.classList.remove('gal-current');
+      next.remove();
+      wrap.classList.remove(dirClass);
+    }, animationMs);
   }, intervalMs);
 }
 
